@@ -1,0 +1,37 @@
+// frontend/src/utils/payment.ts
+import axios from 'axios';
+
+export const initializeRazorpay = () => {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
+export const makePayment = async (tripId, amount) => {
+  const res = await initializeRazorpay();
+  if (!res) return alert("Razorpay SDK failed to load");
+
+  const order = await axios.post("/api/payment/order", { amount });
+  
+  const options = {
+    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
+    amount: order.data.amount,
+    currency: "INR",
+    name: "Trivara",
+    description: "Trip Booking",
+    order_id: order.data.id,
+    handler: async function (response) {
+      // Send verification to backend
+      await axios.post("/api/payment/verify", response);
+      alert("Booking Successful!");
+    },
+    theme: { color: "#FF8C42" },
+  };
+
+  const paymentObject = new (window as any).Razorpay(options);
+  paymentObject.open();
+};

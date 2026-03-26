@@ -1,0 +1,38 @@
+"use client";
+import { motion } from "framer-motion";
+
+export default function Hero() {
+  return (
+    <section className="relative h-[80vh] flex items-center justify-center overflow-hidden bg-deep">
+      {/* Background Gradient Orbs */}
+      <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-sunset opacity-20 blur-[120px] rounded-full" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-ocean opacity-20 blur-[120px] rounded-full" />
+
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="text-center z-10 px-4"
+      >
+        <h1 className="text-6xl md:text-8xl font-black text-white mb-6 tracking-tighter">
+          TRIVARA
+        </h1>
+        <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+          Explore Beyond Limits. Discover handpicked local experiences and epic group trips.
+        </p>
+        
+        {/* Search Bar - Glassmorphism */}
+        <div className="bg-white/10 backdrop-blur-xl p-2 rounded-2xl border border-white/20 flex flex-col md:flex-row gap-2 max-w-3xl mx-auto shadow-2xl">
+          <input 
+            type="text" 
+            placeholder="Where to?" 
+            className="bg-transparent text-white p-4 outline-none flex-grow placeholder:text-gray-400"
+          />
+          <button className="bg-brand-sunset hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-xl transition-all active:scale-95">
+            Search Adventures
+          </button>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
